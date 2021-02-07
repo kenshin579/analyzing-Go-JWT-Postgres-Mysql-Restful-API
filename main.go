@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/victorsteven/fullstack/api"
+	"github.com/kenshin579/analyzing-Go-JWT-Postgres-Mysql-Restful-API/api"
 )
 
 func main() {

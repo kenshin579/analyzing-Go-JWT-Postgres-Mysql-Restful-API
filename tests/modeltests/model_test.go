@@ -8,8 +8,8 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
-	"github.com/victorsteven/fullstack/api/controllers"
-	"github.com/victorsteven/fullstack/api/models"
+	"github.com/kenshin579/analyzing-Go-JWT-Postgres-Mysql-Restful-API/api/controllers"
+	"github.com/kenshin579/analyzing-Go-JWT-Postgres-Mysql-Restful-API/api/models"
 )
 
 var server = controllers.Server{}

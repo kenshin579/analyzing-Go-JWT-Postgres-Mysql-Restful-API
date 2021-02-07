@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/jinzhu/gorm"
-	"github.com/victorsteven/fullstack/api/models"
+	"github.com/kenshin579/analyzing-Go-JWT-Postgres-Mysql-Restful-API/api/models"
 )
 
 var users = []models.User{
