@@ -54,7 +54,7 @@ func Load(db *gorm.DB) {
 		if err != nil {
 			log.Fatalf("cannot seed users table: %v", err)
 		}
-		posts[i].AuthorID = users[i].ID
+		posts[i].AuthorID = users[i].ID //post에 foreign 키를 넣는다
 
 		err = db.Debug().Model(&models.Post{}).Create(&posts[i]).Error
 		if err != nil {
