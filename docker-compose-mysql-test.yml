@@ -1,0 +1,39 @@
+version: '3'
+services:
+  app:
+    container_name: full_app_test
+    build:
+      context: .
+      dockerfile: ./Dockerfile.test
+    volumes:
+      - api_test:/app/src/app/
+    depends_on:
+      - mysql_test
+    networks:
+      - fullstack_test
+
+  mysql_test:
+    image: mysql:5.7
+    container_name: full_db_test_mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - DATABASE_HOST=${DB_HOST}
+    volumes:
+      - database_mysql_test:/var/lib/mysql
+    networks:
+      - fullstack_test
+
+volumes:
+  api_test:
+  database_mysql_test:
+
+# Networks to be created to facilitate communication between containers
+networks:
+  fullstack_test:
+    driver: bridge
+
