@@ -1,6 +1,6 @@
 version: '3'
 services:
-  app:
+  app_test:
     container_name: full_app_test
     build:
       context: .
@@ -18,11 +18,11 @@ services:
     ports:
       - 3306:3306
     environment:
-      - MYSQL_DATABASE=${DB_NAME}
-      - MYSQL_USER=${DB_USER}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      - DATABASE_HOST=${DB_HOST}
+      - MYSQL_DATABASE=${TEST_DB_NAME}
+      - MYSQL_USER=${TEST_DB_USER}
+      - MYSQL_PASSWORD=${TEST_DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${TEST_DB_PASSWORD}
+      - DATABASE_HOST=${TEST_DB_HOST}
     volumes:
       - database_mysql_test:/var/lib/mysql
     networks:
