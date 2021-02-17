@@ -18,11 +18,11 @@ services:
     ports:
       - 3306:3306
     environment:
+      - MYSQL_ROOT_PASSWORD=${TEST_DB_PASSWORD}
       - MYSQL_DATABASE=${TEST_DB_NAME}
       - MYSQL_USER=${TEST_DB_USER}
       - MYSQL_PASSWORD=${TEST_DB_PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${TEST_DB_PASSWORD}
-      - DATABASE_HOST=${TEST_DB_HOST}
+#    env_file: .env
     volumes:
       - database_mysql_test:/var/lib/mysql
     networks:
@@ -35,5 +35,5 @@ volumes:
 # Networks to be created to facilitate communication between containers
 networks:
   fullstack_test:
-    driver: bridge
+#    driver: bridge
 
