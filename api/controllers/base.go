@@ -25,6 +25,7 @@ func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, D
 
 	if Dbdriver == "mysql" {
 		DBURL := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", DbUser, DbPassword, DbHost, DbPort, DbName)
+		fmt.Println("DBURL", DBURL)
 		server.DB, err = gorm.Open(Dbdriver, DBURL)
 		if err != nil {
 			fmt.Printf("Cannot connect to %s database", Dbdriver)
