@@ -8,7 +8,7 @@ LABEL maintainer="Steven Victor <chikodi543@gmail.com>"
 
 # Install git.
 # Git is required for fetching the dependencies.
-RUN apk update && apk add --no-cache git
+RUN apk update && apk add --no-cache ca-certificates git
 
 # Set the current working directory inside the container 
 WORKDIR /app
