@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv-volume
+  labels:
+    type: local
+    app: fullstack-mysql
+spec:
+  storageClassName: manual                    # Storage class. A PV Claim requesting the same storageClass can be bound to this volume.
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath: # hostPath PersistentVolume is used for development and testing. It uses a file/directory on the Node to emulate network-attached storage
+    path: "/mnt/data"
+  persistentVolumeReclaimPolicy: Retain       # Retain the PersistentVolume even after PersistentVolumeClaim is deleted. The volume is considered “released”. But it is not yet available for another claim because the previous claimant’s data remains on the volume.
+---
+apiVersion: v1
+kind: PersistentVolumeClaim               # Create a PersistentVolumeClaim to request a PersistentVolume storage
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: fullstack-mysql
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany                # ReadWriteMany means the volume can be mounted as read-write by many Nodes
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment                    # Type of the kubernetes resource
+metadata:
+  name: fullstack-mysql             # Name of the deployment (Use this name as db host in your application)
+  labels: # Labels applied to this deployment
+    app: fullstack-mysql
+spec:
+  selector:
+    matchLabels: # This deployment applies to the Pods matching the specified labels
+      app: fullstack-mysql
+      tier: mysql
+  strategy:
+    type: Recreate
+  replicas: 1
+  template: # Template for the pods in this deployment
+    metadata:
+      labels: # labels to be applied to the pods in this deployment
+        app: fullstack-mysql
+        tier: mysql
+    spec: # The spec for the containers that will be run inside the Pods in this deployment
+      containers:
+        - image: mysql:5.7            # The container image
+          name: mysql
+          imagePullPolicy: "IfNotPresent"  # Get it from dockerhub if it is not present in our machine
+
+          envFrom: # Environment variables passed to the container
+            - secretRef: # Read environment variables from kubernetes secrets
+                name: mysql-secret
+
+          ports:
+            - containerPort: 3306       # The port that the container exposes
+              name: mysql
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mysql-persistent-storage # This name should match the name specified in `volumes.name`
+      volumes: # A PersistentVolume is mounted as a volume to the Pod
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fullstack-mysql
+  labels:
+    app: fullstack-mysql
+spec:
+  type: NodePort
+  ports:
+    - port: 3306
+  selector: # Selects any Pod with labels `app=fullstack-postgres,tier=postgres`
+    app: fullstack-mysql
+    tier: mysql 
