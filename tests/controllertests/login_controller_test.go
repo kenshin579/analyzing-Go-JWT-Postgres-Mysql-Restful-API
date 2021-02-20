@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -13,12 +12,8 @@ import (
 	"gopkg.in/go-playground/assert.v1"
 )
 
-func TestSignIn(t *testing.T) {
+func TestSignIn_사용자_요청이_부족한_경우_오류가_발생한다(t *testing.T) {
 
-	err := refreshUserTable()
-	if err != nil {
-		log.Fatal(err)
-	}
 	user, err := seedOneUser()
 	if err != nil {
 		fmt.Printf("This is the error %v\n", err)
@@ -57,9 +52,11 @@ func TestSignIn(t *testing.T) {
 	}
 }
 
-func TestLogin(t *testing.T) {
+//todo: 성공, 실패를 분리해서 작성하면 좋을 듯하다
+func TestLogin_성공하는_경우_실패_하는_경우를_테스트한다(t *testing.T) {
 
-	refreshUserTable()
+	//todo : 이건 setup으로 빼서 작성하는 게 좋아보임
+	//refreshUserTable() //아래 seedOneUser에서 이미 해주고 있음
 
 	_, err := seedOneUser()
 	if err != nil {

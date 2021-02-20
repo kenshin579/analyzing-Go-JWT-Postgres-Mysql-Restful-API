@@ -17,6 +17,7 @@ var userInstance = models.User{}
 var postInstance = models.Post{}
 
 func TestMain(m *testing.M) {
+	fmt.Println("TestMain executed...")
 	err := godotenv.Load(os.ExpandEnv("../../.env"))
 	if err != nil {
 		log.Fatalf("Error getting env %v\n", err)

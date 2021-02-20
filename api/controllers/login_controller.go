@@ -46,6 +46,8 @@ func (server *Server) SignIn(email, password string) (string, error) {
 
 	user := models.User{}
 
+	//todo : server.DB.Debug() 코드상으로 이렇게 되어 있어서 production인 경우에는 코드를 수정해줘야 하는 단점이 있음
+	//이렇게는 사용하지는 말자
 	err = server.DB.Debug().Model(models.User{}).Where("email = ?", email).Take(&user).Error
 	if err != nil {
 		return "", err
